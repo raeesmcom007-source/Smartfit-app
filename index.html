@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SmartFit App</title>
+<style>
+body { font-family: Arial; padding:20px; max-width:480px; margin:auto; }
+input,select,button { width:100%; padding:10px; margin:8px 0; font-size:16px; }
+h1{color:#2563eb;} h2{color:#16a34a;} h3{color:#9333ea;}
+.card{padding:15px;border:1px solid #ddd;border-radius:10px;margin-top:15px;}
+</style>
+</head>
+<body>
+
+<h1>Smart Fit Planner</h1>
+<button onclick="gotoForm()">Start</button>
+
+<div id="form" style="display:none;">
+  <h2>Enter Your Details</h2>
+  <input id="age" placeholder="Age" type="number">
+  <input id="weight" placeholder="Weight (kg)" type="number">
+  <input id="height" placeholder="Height (cm)" type="number">
+  <select id="goal">
+    <option value="">Select Goal</option>
+    <option value="lose">Lose Weight</option>
+    <option value="gain">Gain Weight</option>
+    <option value="maintain">Maintain</option>
+  </select>
+  <button onclick="generate()">Generate Plan</button>
+</div>
+
+<div id="result" style="display:none;">
+  <h3>Your Fitness Plan</h3>
+  <div class="card">
+    <p id="cal"></p>
+    <p id="wrk"></p>
+  </div>
+  <button onclick="restart()">Restart</button>
+</div>
+
+<script>
+function gotoForm(){ document.getElementById('form').style.display='block'; }
+
+function generate(){
+  let age=+document.getElementById('age').value;
+  let w=+document.getElementById('weight').value;
+  let h=+document.getElementById('height').value;
+  let goal=document.getElementById('goal').value;
+
+  let bmr = 10*w + 6.25*h - 5*age + 5;
+  let calories = goal=='lose'?bmr-300 : goal=='gain'?bmr+300 : bmr;
+
+  let workout = goal=='gain'?"Strength Training 5x/week + High Protein" :
+                 goal=='lose'?"HIIT 3x/week + Calorie Deficit" :
+                 "Balanced Cardio + Strength";
+
+  document.getElementById('cal').innerHTML = "Daily Calories: <b>"+Math.round(calories)+"</b>";
+  document.getElementById('wrk').innerText = "Workout: " + workout;
+
+  document.getElementById('result').style.display='block';
+}
+
+function restart(){ location.reload(); }
+</script>
+
+</body>
+</html>
